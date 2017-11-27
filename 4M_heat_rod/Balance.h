@@ -3,26 +3,14 @@
 
 using namespace std;
 
-unsigned int dim = 10;
 
-static long double* a = new long double[dim + 1];
-static long double* Phi = new long double[dim + 1];
-static long double* d = new long double[dim + 1];
-
-static long double* A = new long double[dim + 1];
-static long double* B = new long double[dim + 1];
-static long double* C = new long double[dim + 1];
-
-static const double ksi = 0.5;
-static const double step = 1. / dim;
-
-void set_a() {
+void set_a(double ksi, double step, long double* a) {
 	a[0] = 0.;
 	double x = 0.;
 	int i(1);
 	while (x <= ksi)
 	{
-		a[i] = 1. / ((1. / step) * ((long double)exp(x + step - 0.5) - (long double)exp(x - 0.5)));
+		*(a + i) = 1. / ((1. / step) * ((long double)exp(x + step - 0.5) - (long double)exp(x - 0.5)));
 		i++;
 		x += step;
 	}
@@ -34,7 +22,7 @@ void set_a() {
 	}
 }
 
-void set_d() {
+void set_d(double ksi, double step, unsigned int dim, long double* d) {
 	d[0] = 0.;
 	double x = 0.5 * step;
 	int i(1);
@@ -48,7 +36,7 @@ void set_d() {
 	d[i] = (1. / step) * (1. + (-(long double)cos(M_PI * (x + step) + (long double)cos(M_PI * (x + 0.5 * step)))));
 	x += step;
 
-	while (x != 1 - 0.5 * step)
+	while (x <= 1 - 0.5 * step)
 	{
 		d[i] = (1. / step) * (-(long double)cos(M_PI * (x + step) + (long double)cos(M_PI * x)));
 		i++;
@@ -57,7 +45,7 @@ void set_d() {
 	d[dim] = 0.;
 }
 
-void set_Phi() {
+void set_Phi(double ksi, double step, unsigned int dim, long double* Phi) {
 	Phi[0] = 1;
 	double x = 0.5 * step;
 	int i(1);
@@ -72,7 +60,7 @@ void set_Phi() {
 		((long double)exp(x + step - 0.5) - (long double)exp(x + 0.5 * step - 0.5))));
 	x += step;
 
-	while (x != 1 - 0.5 * step)
+	while (x <= 1 - 0.5 * step)
 	{
 		Phi[i] = -(1. / step) * ((long double)exp(x + step - 0.5) - (long double)exp(x - 0.5));
 		i++;
@@ -81,21 +69,21 @@ void set_Phi() {
 	Phi[dim] = 1;
 }
 
-void set_A() {
+void set_A(double step, unsigned int dim, long double* a, long double* A) {
 	for (int i(0); i < dim; ++i) {
 		A[i] = a[i] / (step * step);
 	}
 	A[dim] = -1;
 }
 
-void set_B() {
+void set_B(double step, unsigned int dim, long double* a, long double* B) {
 	B[0] = -1.;
 	for (int i(1); i < dim; ++i) {
 		B[i] = a[i + 1] / (step * step);
 	}
 }
 
-void set_C() {
+void set_C(double step, unsigned int dim, long double* a, long double* d, long double* C) {
 	C[0] = 1;
 	C[dim] = 1;
 	for (int i(1); i < dim; ++i) {
@@ -124,14 +112,12 @@ void phi_test_set()
 	}
 }
 
-
 void a_test_set() {
 	a_test[0] = -2.;
 	for (int i(1); i < 11; ++i) {
 		a_test[i] = 1.;
 	}
 }
-
 
 void d_test_set() {
 	d_test[0] = -2.;
@@ -147,9 +133,6 @@ void d_test_set() {
 		}
 	}
 }
-
-
-
 
 void rush(int n, double *_A, double *_C, double *_B, double *_Phi, double *_V)
 /*
