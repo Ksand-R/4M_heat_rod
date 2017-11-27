@@ -103,6 +103,54 @@ void set_C() {
 	}
 }
 
+float a_test[11];
+float d_test[11];
+float phi_test[11];
+
+void phi_test_set()
+{
+	phi_test[0] = -1.;
+	phi_test[10] = -1.;
+	for (int i(1); i < 10; ++i) {
+		if (i < 5) {
+			phi_test[i] = 0.;
+		}
+		if (i > 5) {
+			phi_test[i] = -1.;
+		}
+		if (i == 5) {
+			phi_test[i] = -0.5;
+		}
+	}
+}
+
+
+void a_test_set() {
+	a_test[0] = -2.;
+	for (int i(1); i < 11; ++i) {
+		a_test[i] = 1.;
+	}
+}
+
+
+void d_test_set() {
+	d_test[0] = -2.;
+	for (int i(1); i < 10; ++i) {
+		if (i < 5) {
+			phi_test[i] = 1.;
+		}
+		if (i > 5) {
+			phi_test[i] = 2.;
+		}
+		if (i == 5) {
+			phi_test[i] = 1.5;
+		}
+	}
+}
+
+
+
+
 void rush(int n, double *_A, double *_C, double *_B, double *_Phi, double *_V)
 /*
 * n - число уравнений (строк матрицы)
