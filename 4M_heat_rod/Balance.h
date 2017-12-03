@@ -1,142 +1,83 @@
 #include <cmath>
-#define M_PI 3.14159265358979323846
-using std::cout;
-using std::cin;
-using std::endl;
-
-namespace _4M_heat_rod{
+#define M_PI	3.14159265358979323846
+#define M_EXP	2.71828182845904523536 
 
 static double	ksi = 0.5;
 static int		dim = 10;
 static double	_step = 1. / dim;
 
-void set_a(long double* a) {
-	a[0] = 0.;
-	double x = 0.;
-	int i(1);
-	while (x <= ksi)
-	{
-		*(a + i) = 1. / ((1. / _step) * ((long double)exp(x + _step - 0.5) - (long double)exp(x - 0.5)));
-		i++;
-		x += _step;
-	}
-	while (x <= 1)
-	{
-		a[i] = 1.;
-		i++;
-		x += _step;
-	}
-}
+double* A = new double[dim];
+double* B = new double[dim];
+double* C = new double[dim];
 
-void set_d(long double* d) {
-	d[0] = 0.;
-	double x = 0.5 * _step;
-	int i(1);
-	while (x + _step < ksi)
-	{
-		d[i] = 2.;
-		i++;
-		x += _step;
-	}
-	i++;
-	d[i] = (1. / _step) * (1. + (-(long double)cos(M_PI * (x + _step) + (long double)cos(M_PI * (x + 0.5 * _step)))));
-	x += _step;
+typedef double(*func)(double);
+double _k1(double _x) { return (sqrt(M_EXP) / exp(_x)); }
+double _k2(double _x) { return 1.; }
+double _q1(double _x) { return 2.; }
+double _q2(double _x) { return sin(M_PI * _x); }
+double _f1(double _x) { return cos(M_PI * _x); }
+double _f2(double _x) { return (exp(_x) / sqrt(M_EXP)); }
 
-	while (x <= 1 - 0.5 * _step)
-	{
-		d[i] = (1. / _step) * (-(long double)cos(M_PI * (x + _step) + (long double)cos(M_PI * x)));
-		i++;
-		x += _step;
-	}
-	d[dim] = 0.;
-}
-
-void set_Phi(long double* Phi) {
-	Phi[0] = 1;
-	double x = 0.5 * _step;
-	int i(1);
-	while (x + _step < ksi)
-	{
-		Phi[i] = -(1. / _step) * ((long double)sin(M_PI * (x + _step) - (long double)sin(M_PI * x)));
-		i++;
-		x += _step;
-	}
-	i++;
-	Phi[i] = -(1. / _step) * ((long double)sin(M_PI * (x + 0.5 * _step) - (long double)sin(M_PI * x) +
-		((long double)exp(x + _step - 0.5) - (long double)exp(x + 0.5 * _step - 0.5))));
-	x += _step;
-
-	while (x <= 1 - 0.5 * _step)
-	{
-		Phi[i] = -(1. / _step) * ((long double)exp(x + _step - 0.5) - (long double)exp(x - 0.5));
-		i++;
-		x += _step;
-	}
-	Phi[dim] = 1;
-}
-
-void set_A(long double* a, long double* A) {
-	for (int i(0); i < dim; ++i) {
-		A[i] = a[i] / (_step * _step);
-	}
-	A[dim] = -1;
-}
-
-void set_B(long double* a, long double* B) {
-	B[0] = -1.;
-	for (int i(1); i < dim; ++i) {
-		B[i] = a[i + 1] / (_step * _step);
-	}
-}
-
-void set_C(long double* a, long double* d, long double* C) {
-	C[0] = 1;
-	C[dim] = 1;
-	for (int i(1); i < dim; ++i) {
-		C[i] = -(a[i] / (_step * _step) + a[i + 1] / (_step * _step) + d[i]);
-	}
-}
-
-float a_test[11];
-float d_test[11];
-float phi_test[11];
-
-void phi_test_set()
+double _calc_integral(func f, double a, double b)
 {
-	phi_test[0] = -1.;
-	phi_test[10] = -1.;
-	for (int i(1); i < 10; ++i) {
-		if (i < 5) {
-			phi_test[i] = 0.;
+	double _res, _step;
+	_res = 0.0;
+	_step = (b - a) / 1000.;
+
+#pragma opm parallel for private(_res), reduction(+ : sum) 
+	for (unsigned int i(0); i < 1000; ++i) {
+		_res += f(a + _step * (i + 0.5));
+	}
+	_res *= _step;
+	return _res;
+}
+
+void _calc_coef
+	(int n, double ksi, double *d, double *phi, double *a, double(*k1)(double), double(*k2)(double), 
+	double(*f1)(double), double(*f2)(double), double(*q1)(double), double(*q2)(double))
+	{
+	int i;
+	#pragma omp parallel for shared(d, fi, a) private(i)
+	for (i = 1; i < n; ++i) {
+		if (_step*(i + 0.5) <= ksi) {
+			d[i] = _calc_integral(q1, _step*(i - 0.5), _step*(i + 0.5)) / _step;
+			phi[i] = _calc_integral(f1, _step*(i - 0.5), _step*(i + 0.5)) / _step;
 		}
-		if (i > 5) {
-			phi_test[i] = -1.;
+		else {
+			if (_step*(i - 0.5) >= ksi) {
+				d[i] = _calc_integral(q2, _step*(i - 0.5), _step*(i + 0.5)) / _step;
+				phi[i] = _calc_integral(f2, _step*(i - 0.5), _step*(i + 0.5)) / _step;
+			}
+			else {
+				d[i] = (_calc_integral(q1, _step*(i - 0.5), ksi) + _calc_integral(q2, ksi, _step*(i + 0.5))) / _step;
+				phi[i] = (_calc_integral(f1, _step*(i - 0.5), ksi) + _calc_integral(f2, ksi, _step*(i + 0.5))) / _step;
+			}
 		}
-		if (i == 5) {
-			phi_test[i] = -0.5;
+	}
+	#pragma omp parallel for shared(d, fi, a) private(i)
+	for (i = 1; i <= n; ++i) {
+		if (_step*i <= ksi) {
+			a[i] = 1 / (_calc_integral(k1, _step*(i - 1), _step*i) / _step);
+		}
+		else {
+			if (_step*(i - 1) >= ksi) {
+				a[i] = 1 / (_calc_integral(k2, _step*(i - 1), _step*i) / _step);
+			}
+			else {
+				a[i] = 1 / ((_calc_integral(k1, _step*(i - 1), ksi) + _calc_integral(k2, ksi, _step*i)) / _step);
+			}
 		}
 	}
 }
 
-void a_test_set() {
-	a_test[0] = -2.;
-	for (int i(1); i < 11; ++i) {
-		a_test[i] = 1.;
-	}
-}
-
-void d_test_set() {
-	d_test[0] = -2.;
-	for (int i(1); i < 10; ++i) {
-		if (i < 5) {
-			phi_test[i] = 1.;
-		}
-		if (i > 5) {
-			phi_test[i] = 2.;
-		}
-		if (i == 5) {
-			phi_test[i] = 1.5;
-		}
+void set_diag(double *a, double *d) 
+{
+	int i;
+#pragma omp parallel for shared(A, B, C) private(i)
+	for (i = 1; i < dim; ++i) {
+		A[i] = a[i] / (_step * _step);
+		B[i] = a[i + 1] / (_step * _step);
+		C[i] = (a[i] + a[i + 1]) / (_step * _step) + d[i];
 	}
 }
 
@@ -163,5 +104,4 @@ void rush(int n, double *_A, double *_C, double *_B, double *_Phi, double *_V)
 	for (int i = n - 2; i >= 0; i--)
 		_V[i] = (_Phi[i] - _B[i] * _V[i + 1]) / _C[i];
 
-}
 }
