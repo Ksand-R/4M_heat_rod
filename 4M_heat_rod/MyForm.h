@@ -12,6 +12,7 @@ namespace My4M_heat_rod {
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
+	int _NSeries = 0;
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -19,6 +20,7 @@ namespace My4M_heat_rod {
 		{
 			InitializeComponent();
 			//
+			
 			//TODO: Add the constructor code here
 			//
 		}
@@ -36,6 +38,28 @@ namespace My4M_heat_rod {
 		}
 	private: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
 	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::DataGridView^  dataGridView1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column1;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column2;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column3;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column4;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column5;
+	private: System::Windows::Forms::TextBox^  textBox1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	protected:
 
 	private:
@@ -51,58 +75,128 @@ namespace My4M_heat_rod {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->Column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Column5 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// chart1
 			// 
-			chartArea1->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
-			this->chart1->Legends->Add(legend1);
-			this->chart1->Location = System::Drawing::Point(31, 37);
+			chartArea2->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea2);
+			legend2->Name = L"Legend1";
+			this->chart1->Legends->Add(legend2);
+			this->chart1->Location = System::Drawing::Point(231, 12);
 			this->chart1->Name = L"chart1";
-			series1->ChartArea = L"ChartArea1";
-			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series1->Legend = L"Legend1";
-			series1->Name = L"Series1";
-			series2->ChartArea = L"ChartArea1";
-			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series2->Legend = L"Legend1";
-			series2->Name = L"Series2";
-			this->chart1->Series->Add(series1);
-			this->chart1->Series->Add(series2);
-			this->chart1->Size = System::Drawing::Size(1137, 740);
+			series3->ChartArea = L"ChartArea1";
+			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series3->Legend = L"Legend1";
+			series3->Name = L"Series1";
+			series4->ChartArea = L"ChartArea1";
+			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series4->Legend = L"Legend1";
+			series4->Name = L"Series2";
+			this->chart1->Series->Add(series3);
+			this->chart1->Series->Add(series4);
+			this->chart1->Size = System::Drawing::Size(637, 391);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
+			this->chart1->Click += gcnew System::EventHandler(this, &MyForm::chart1_Click);
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(1174, 109);
+			this->button1->Location = System::Drawing::Point(26, 40);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(262, 59);
+			this->button1->Size = System::Drawing::Size(199, 59);
 			this->button1->TabIndex = 1;
 			this->button1->Text = L"button1";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
+			// 
+			// dataGridView1
+			// 
+			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5) {
+				this->Column1,
+					this->Column2, this->Column3, this->Column4, this->Column5
+			});
+			this->dataGridView1->Location = System::Drawing::Point(732, 12);
+			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->RowTemplate->Height = 24;
+			this->dataGridView1->Size = System::Drawing::Size(708, 391);
+			this->dataGridView1->TabIndex = 2;
+			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MyForm::dataGridView1_CellContentClick);
+			// 
+			// Column1
+			// 
+			this->Column1->FillWeight = 40;
+			this->Column1->HeaderText = L"node";
+			this->Column1->Name = L"Column1";
+			this->Column1->Width = 40;
+			// 
+			// Column2
+			// 
+			this->Column2->FillWeight = 40;
+			this->Column2->HeaderText = L"x";
+			this->Column2->Name = L"Column2";
+			this->Column2->Width = 40;
+			// 
+			// Column3
+			// 
+			this->Column3->FillWeight = 200;
+			this->Column3->HeaderText = L"v(x)";
+			this->Column3->Name = L"Column3";
+			this->Column3->Width = 200;
+			// 
+			// Column4
+			// 
+			this->Column4->FillWeight = 200;
+			this->Column4->HeaderText = L"v2(x)";
+			this->Column4->Name = L"Column4";
+			this->Column4->Width = 200;
+			// 
+			// Column5
+			// 
+			this->Column5->FillWeight = 250;
+			this->Column5->HeaderText = L"error";
+			this->Column5->Name = L"Column5";
+			this->Column5->Width = 250;
+			// 
+			// textBox1
+			// 
+			this->textBox1->Location = System::Drawing::Point(26, 12);
+			this->textBox1->Name = L"textBox1";
+			this->textBox1->Size = System::Drawing::Size(120, 22);
+			this->textBox1->TabIndex = 3;
+			this->textBox1->Text = L"10";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1463, 798);
+			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->chart1);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -110,43 +204,61 @@ namespace My4M_heat_rod {
 		//		std::ofstream filetable, fileref;
 		//		filetable.open("maintable.txt");
 		//		fileref.open("mainref.txt");
-		int n = 10;
+		//int dim = 10;
+
+		//DataVisualization::Charting::Series^ s = gcnew DataVisualization::Charting::Series;
+		//chart1->Series->Add(s);
+		//s->BorderWidth = 2;
+		//s->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+		//int* NSeries = &_NSeries;
+
+		dim = Convert::ToInt64(textBox1->Text);
 		double eps = 0.0000005, eps2;
 		double xeps2, __a = 0., b = 1.0, ksi = 0.5, mu1 = 1., mu2 = 1., *d,
 			*fi, *a, *v, *d2, *fi2, *a2, *v2;
 		while (true) {
 			eps2 = 0.0;
-			d = new double[n];
-			fi = new double[n];
-			a = new double[n + 1];
-			v = new double[n + 1];
+			d = new double[dim];
+			fi = new double[dim];
+			a = new double[dim + 1];
+			v = new double[dim + 1];
 
-			_calc_coef(n, ksi, d, fi, a, _k1, _k2, _f1, _f2, _q1, _q2);
-			rush(n, a, d, fi, v);
+			_calc_coef(dim, ksi, d, fi, a, _k1, _k2, _f1, _f2, _q1, _q2);
+			rush(dim, a, d, fi, v);
 
-			d2 = new double[2 * n];
-			fi2 = new double[2 * n];
-			a2 = new double[2 * n + 1];
-			v2 = new double[2 * n + 1];
+			d2 = new double[2 * dim];
+			fi2 = new double[2 * dim];
+			a2 = new double[2 * dim + 1];
+			v2 = new double[2 * dim + 1];
 
-			_calc_coef(2 * n, ksi, d2, fi2, a2, _k1, _k2, _f1, _f2, _q1, _q2);
-			rush(2 * n, a2, d2, fi2, v2);
+			_calc_coef(2 * dim, ksi, d2, fi2, a2, _k1, _k2, _f1, _f2, _q1, _q2);
+			rush(2 * dim, a2, d2, fi2, v2);
 
-			for (int i = 0; i <= n; ++i)
+			for (int i = 0; i <= dim; ++i)
 				if (fabs(v[i] - v2[2 * i]) > eps2) {
 					eps2 = fabs(v[i] - v2[2 * i]);
-					xeps2 = __a + (b - __a) * i / n;
+					xeps2 = __a + (b - __a) * i / dim;
 				}
 			if (eps2 <= eps) break;
-			n *= 2;
+			dim *= 2;
 		}
-		//		fileref << n << ' ' << eps2 << ' ' << xeps2;
-				for (int i = 0; i <= n; ++i) {
-		//			filetable << __a + ((b - __a) / n)*i << ' ' << v[i] << ' ' << v2[2 * i] << ' ' << v[i] - v2[2 * i] << std::endl;
-					chart1->Series["Series1"]->Points->AddXY(__a + (b - __a)* i / n, v[i]);
-					chart1->Series["Series2"]->Points->AddXY(__a + (b - __a)* i / n, v2[2 * i]);
-		//chart3->Series["Series1"]->Points->AddXY(__a + (b - __a) * i / n, v[i] - v2[2 * i]);
+				for (int i = 0; i <= dim; ++i) {
+					chart1->Series["Series1"]->Points->AddXY(__a + (b - __a)* i / dim, v[i]);
+					chart1->Series["Series2"]->Points->AddXY(__a + (b - __a)* i / dim, v2[2 * i]);
+
+					dataGridView1->Rows->Add();
+					dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(i);
+					dataGridView1->Rows[i]->Cells[1]->Value = Convert::ToString(i * _step);
+					dataGridView1->Rows[i]->Cells[2]->Value = Convert::ToString(v[i]);
+					dataGridView1->Rows[i]->Cells[3]->Value = Convert::ToString(v2[2 * i]);
+					dataGridView1->Rows[i]->Cells[4]->Value = Convert::ToString(v[i] - v2[2 * i]);
+
+					//chart1->Series[*NSeries]->Points->AddXY(__a + (b - __a)* i / dim, v[i]);
+					//(*NSeries)++;
+					//chart1->Series[*NSeries]->Points->AddXY(__a + (b - __a)* i / dim, v2[2 * i]);
+					//(*NSeries)--;
 				}
+		//		(*NSeries)++;
 		delete[] d;
 		delete[] fi;
 		delete[] a;
@@ -156,5 +268,9 @@ namespace My4M_heat_rod {
 		delete[] a2;
 		delete[] v2;
 	}
-	};
+	private: System::Void chart1_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+private: System::Void dataGridView1_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+}
+};
 }

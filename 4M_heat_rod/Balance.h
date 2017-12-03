@@ -22,7 +22,7 @@ double _calc_integral(func f, double a, double b)
 	_res = 0.0;
 	_step = (b - a) / 1000.;
 
-//#pragma opm parallel for private(_res), reduction(+ : sum) 
+#pragma opm parallel for private(_res), reduction(+ : sum) 
 	for (int i(0); i < 1000; ++i) {
 		_res += f(a + _step * (i + 0.5));
 	}
@@ -36,7 +36,7 @@ void _calc_coef
 	{
 	_step = 1. / n;
 	int i;
-//	#pragma omp parallel for shared(d, phi, a) private(i)
+	#pragma omp parallel for shared(d, phi, a) private(i)
 	for (i = 1; i < n; ++i) {
 		if (_step*(i + 0.5) <= ksi) {
 			d[i] = _calc_integral(q1, _step*(i - 0.5), _step*(i + 0.5)) / _step;
@@ -53,7 +53,7 @@ void _calc_coef
 			}
 		}
 	}
-//	#pragma omp parallel for shared(d, a) private(i)
+	#pragma omp parallel for shared(d, a) private(i)
 	for (i = 1; i <= n; ++i) {
 		if (_step*i <= ksi) {
 			a[i] = 1 / (_calc_integral(k1, _step*(i - 1), _step*i) / _step);
@@ -70,27 +70,31 @@ void _calc_coef
 }
 
 void rush(int n, double *a, double *d, double *fi, double *v) {
-	double *al, *bet, *A, *B, *C, at1 = 0.0, at2 = 0.0;
+	double *al, *bet, *A, *B, *C;
+	double kappa1 = 0.0, kappa2 = 0.0;
+
 	A = new double[n];
 	B = new double[n];
 	C = new double[n];
 	al = new double[n + 1];
 	bet = new double[n + 1];
+	
 	int i;
 	_step = 1. / n;
-//#pragma omp parallel for shared(A, B, C) private(i)
+	
+	#pragma omp parallel for shared(A, B, C) private(i)
 	for (i = 1; i < n; ++i) {
 		A[i] = a[i] / (_step*_step);
 		B[i] = a[i + 1] / (_step*_step);
 		C[i] = (a[i] + a[i + 1]) / (_step*_step) + d[i];
 	}
-	al[1] = at1;
+	al[1] = kappa1;
 	bet[1] = 1.;
 	for (int i = 2; i <= n; ++i) {
 		al[i] = B[i - 1] / (C[i - 1] - al[i - 1] * A[i - 1]);
 		bet[i] = (fi[i - 1] + bet[i - 1] * A[i - 1]) / (C[i - 1] - al[i - 1] * A[i - 1]);
 	}
-	v[n] = (1. + bet[n] * at2) / (1 - al[n] * at2);
+	v[n] = (1. + bet[n] * kappa2) / (1 - al[n] * kappa2);
 	for (int i = n - 1; i >= 0; --i)
 		v[i] = al[i + 1] * v[i + 1] + bet[i + 1];
 	delete[] al;
