@@ -4,11 +4,9 @@
 
 static double	ksi = 0.5;
 static int		dim = 10;
-static double	_step = 1. / dim;
+static double	_step;// = 1. / dim;
 
-double* A = new double[dim];
-double* B = new double[dim];
-double* C = new double[dim];
+
 
 typedef double(*func)(double);
 double _k1(double _x) { return (sqrt(M_EXP) / exp(_x)); }
@@ -24,8 +22,8 @@ double _calc_integral(func f, double a, double b)
 	_res = 0.0;
 	_step = (b - a) / 1000.;
 
-#pragma opm parallel for private(_res), reduction(+ : sum) 
-	for (unsigned int i(0); i < 1000; ++i) {
+//#pragma opm parallel for private(_res), reduction(+ : sum) 
+	for (int i(0); i < 1000; ++i) {
 		_res += f(a + _step * (i + 0.5));
 	}
 	_res *= _step;
@@ -36,8 +34,9 @@ void _calc_coef
 	(int n, double ksi, double *d, double *phi, double *a, double(*k1)(double), double(*k2)(double), 
 	double(*f1)(double), double(*f2)(double), double(*q1)(double), double(*q2)(double))
 	{
+	_step = 1. / n;
 	int i;
-	#pragma omp parallel for shared(d, fi, a) private(i)
+//	#pragma omp parallel for shared(d, phi, a) private(i)
 	for (i = 1; i < n; ++i) {
 		if (_step*(i + 0.5) <= ksi) {
 			d[i] = _calc_integral(q1, _step*(i - 0.5), _step*(i + 0.5)) / _step;
@@ -54,7 +53,7 @@ void _calc_coef
 			}
 		}
 	}
-	#pragma omp parallel for shared(d, fi, a) private(i)
+//	#pragma omp parallel for shared(d, a) private(i)
 	for (i = 1; i <= n; ++i) {
 		if (_step*i <= ksi) {
 			a[i] = 1 / (_calc_integral(k1, _step*(i - 1), _step*i) / _step);
@@ -70,38 +69,33 @@ void _calc_coef
 	}
 }
 
-void set_diag(double *a, double *d) 
-{
+void rush(int n, double *a, double *d, double *fi, double *v) {
+	double *al, *bet, *A, *B, *C, at1 = 0.0, at2 = 0.0;
+	A = new double[n];
+	B = new double[n];
+	C = new double[n];
+	al = new double[n + 1];
+	bet = new double[n + 1];
 	int i;
-#pragma omp parallel for shared(A, B, C) private(i)
-	for (i = 1; i < dim; ++i) {
-		A[i] = a[i] / (_step * _step);
-		B[i] = a[i + 1] / (_step * _step);
-		C[i] = (a[i] + a[i + 1]) / (_step * _step) + d[i];
+	_step = 1. / n;
+//#pragma omp parallel for shared(A, B, C) private(i)
+	for (i = 1; i < n; ++i) {
+		A[i] = a[i] / (_step*_step);
+		B[i] = a[i + 1] / (_step*_step);
+		C[i] = (a[i] + a[i + 1]) / (_step*_step) + d[i];
 	}
-}
-
-void rush(int n, double *_A, double *_C, double *_B, double *_Phi, double *_V)
-/*
-* n - число уравнений (строк матрицы)
-* _B - диагональ, лежащая над главной (нумеруется: [0;n-2])
-* _C - главная диагональ матрицы A (нумеруется: [0;n-1])
-* _A - диагональ, лежащая под главной (нумеруется: [1;n-1])
-* _Phi - правая часть (столбец)
-* V - решение, массив v будет содержать ответ
-*/
-{
-	double m;
-	for (int i = 1; i < n; i++)
-	{
-		m = _A[i] / _C[i - 1];
-		_C[i] = _C[i] - m*_B[i - 1];
-		_Phi[i] = _Phi[i] - m*_Phi[i - 1];
+	al[1] = at1;
+	bet[1] = 1.;
+	for (int i = 2; i <= n; ++i) {
+		al[i] = B[i - 1] / (C[i - 1] - al[i - 1] * A[i - 1]);
+		bet[i] = (fi[i - 1] + bet[i - 1] * A[i - 1]) / (C[i - 1] - al[i - 1] * A[i - 1]);
 	}
-
-	_V[n - 1] = _Phi[n - 1] / _C[n - 1];
-
-	for (int i = n - 2; i >= 0; i--)
-		_V[i] = (_Phi[i] - _B[i] * _V[i + 1]) / _C[i];
-
+	v[n] = (1. + bet[n] * at2) / (1 - al[n] * at2);
+	for (int i = n - 1; i >= 0; --i)
+		v[i] = al[i + 1] * v[i + 1] + bet[i + 1];
+	delete[] al;
+	delete[] bet;
+	delete[] A;
+	delete[] B;
+	delete[] C;
 }
