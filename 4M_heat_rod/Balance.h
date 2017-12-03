@@ -1,20 +1,29 @@
+//VARIANT_6
 #include <cmath>
 #define M_PI	3.14159265358979323846
 #define M_EXP	2.71828182845904523536 
 
 static double	ksi = 0.5;
 static int		dim = 10;
-static double	_step;// = 1. / dim;
-
-
+static double	_step;
 
 typedef double(*func)(double);
+
 double _k1(double _x) { return (sqrt(M_EXP) / exp(_x)); }
 double _k2(double _x) { return 1.; }
 double _q1(double _x) { return 2.; }
 double _q2(double _x) { return sin(M_PI * _x); }
 double _f1(double _x) { return cos(M_PI * _x); }
 double _f2(double _x) { return (exp(_x) / sqrt(M_EXP)); }
+
+double _k1_t(double _x) { return 1.; }
+double _k2_t(double _x) { return 1.; }
+double _q1_t(double _x) { return 2.; }
+double _q2_t(double _x) { return 1.; }
+double _f1_t(double _x) { return 0.; }
+double _f2_t(double _x) { return 1.; }
+
+
 
 double _calc_integral(func f, double a, double b)
 {
