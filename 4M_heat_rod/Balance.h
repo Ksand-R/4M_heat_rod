@@ -31,9 +31,9 @@ double _calc_integral(func f, double a, double b)
 	_res = 0.0;
 	_step = (b - a) / 1000.;
 
-#pragma opm parallel for private(_res), reduction(+ : sum) 
+#pragma opm parallel for private(_res) reduction(+ : _res) 
 	for (int i(0); i < 1000; ++i) {
-		_res += f(a + _step * (i + 0.5));
+		_res = _res + f(a + _step * (i + 0.5));
 	}
 	_res *= _step;
 	return _res;
@@ -45,7 +45,7 @@ void _calc_coef
 	{
 	_step = 1. / n;
 	int i;
-	#pragma omp parallel for shared(d, phi, a) private(i)
+	#pragma omp parallel for private(i)
 	for (i = 1; i < n; ++i) {
 		if (_step*(i + 0.5) <= ksi) {
 			d[i] = _calc_integral(q1, _step*(i - 0.5), _step*(i + 0.5)) / _step;
@@ -62,7 +62,7 @@ void _calc_coef
 			}
 		}
 	}
-	#pragma omp parallel for shared(d, a) private(i)
+	#pragma omp parallel for private(i)
 	for (i = 1; i <= n; ++i) {
 		if (_step*i <= ksi) {
 			a[i] = 1 / (_calc_integral(k1, _step*(i - 1), _step*i) / _step);
