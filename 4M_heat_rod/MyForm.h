@@ -45,20 +45,7 @@ namespace My4M_heat_rod {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column4;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column5;
 	private: System::Windows::Forms::TextBox^  textBox1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::Label^  label1;
 
 	protected:
 
@@ -75,10 +62,10 @@ namespace My4M_heat_rod {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -88,28 +75,29 @@ namespace My4M_heat_rod {
 			this->Column4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column5 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// chart1
 			// 
-			chartArea2->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea2);
-			legend2->Name = L"Legend1";
-			this->chart1->Legends->Add(legend2);
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->chart1->Legends->Add(legend1);
 			this->chart1->Location = System::Drawing::Point(231, 12);
 			this->chart1->Name = L"chart1";
-			series3->ChartArea = L"ChartArea1";
-			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series3->Legend = L"Legend1";
-			series3->Name = L"Series1";
-			series4->ChartArea = L"ChartArea1";
-			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series4->Legend = L"Legend1";
-			series4->Name = L"Series2";
-			this->chart1->Series->Add(series3);
-			this->chart1->Series->Add(series4);
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Series1";
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series2->Legend = L"Legend1";
+			series2->Name = L"Series2";
+			this->chart1->Series->Add(series1);
+			this->chart1->Series->Add(series2);
 			this->chart1->Size = System::Drawing::Size(637, 391);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
@@ -182,11 +170,20 @@ namespace My4M_heat_rod {
 			this->textBox1->TabIndex = 3;
 			this->textBox1->Text = L"10";
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(23, 114);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(0, 17);
+			this->label1->TabIndex = 4;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1463, 798);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->button1);
@@ -201,11 +198,6 @@ namespace My4M_heat_rod {
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		//		std::ofstream filetable, fileref;
-		//		filetable.open("maintable.txt");
-		//		fileref.open("mainref.txt");
-		//int dim = 10;
-
 		//DataVisualization::Charting::Series^ s = gcnew DataVisualization::Charting::Series;
 		//chart1->Series->Add(s);
 		//s->BorderWidth = 2;
@@ -237,25 +229,25 @@ namespace My4M_heat_rod {
 			for (int i = 0; i <= dim; ++i)
 				if (fabs(v[i] - v2[2 * i]) > eps2) {
 					eps2 = fabs(v[i] - v2[2 * i]);
-					xeps2 = __a + (b - __a) * i / dim;
+					xeps2 = (double)i / dim;
 				}
 			if (eps2 <= eps) break;
 			dim *= 2;
 		}
 				for (int i = 0; i <= dim; ++i) {
-					chart1->Series["Series1"]->Points->AddXY(__a + (b - __a)* i / dim, v[i]);
-					chart1->Series["Series2"]->Points->AddXY(__a + (b - __a)* i / dim, v2[2 * i]);
+					chart1->Series["Series1"]->Points->AddXY((double)i / dim, v[i]);
+					chart1->Series["Series2"]->Points->AddXY((double)i / dim, v2[2 * i]);
 
-					dataGridView1->Rows->Add();
+					dataGridView1->Rows->Add(); 
 					dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(i);
 					dataGridView1->Rows[i]->Cells[1]->Value = Convert::ToString(i * _step);
 					dataGridView1->Rows[i]->Cells[2]->Value = Convert::ToString(v[i]);
 					dataGridView1->Rows[i]->Cells[3]->Value = Convert::ToString(v2[2 * i]);
 					dataGridView1->Rows[i]->Cells[4]->Value = Convert::ToString(v[i] - v2[2 * i]);
 
-					//chart1->Series[*NSeries]->Points->AddXY(__a + (b - __a)* i / dim, v[i]);
+					//chart1->Series[*NSeries]->Points->AddXY((double)i / dim, v[i]);
 					//(*NSeries)++;
-					//chart1->Series[*NSeries]->Points->AddXY(__a + (b - __a)* i / dim, v2[2 * i]);
+					//chart1->Series[*NSeries]->Points->AddXY((double)i / dim, v2[2 * i]);
 					//(*NSeries)--;
 				}
 		//		(*NSeries)++;
@@ -267,6 +259,17 @@ namespace My4M_heat_rod {
 		delete[] fi2;
 		delete[] a2;
 		delete[] v2;
+
+		label1->Text = "ƒл€ решени€ задачи\n  использована равномерна€\n  сетка с числом разбиений\n  n = " 
+			+ Convert::ToString(dim) + "; "
+			"\n«адача должна быть решена с\n заданной точностью\n eps = 0.5*10^Ц7;\n задача решена с точностью\n eps2 =" 
+			+ Convert::ToString(eps2) + "; "
+			+ "\nћаксимальна€ разность\n численных решений\n в общих узлах сетки\n наблюдаетс€ в точке\n x = " 
+			+ Convert::ToString(xeps2) + "; ";
+
+
+
+
 	}
 	private: System::Void chart1_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
