@@ -81,15 +81,16 @@ namespace My4M_heat_rod {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea3 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea4 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series10 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
@@ -122,28 +123,28 @@ namespace My4M_heat_rod {
 			// 
 			// chart1
 			// 
-			chartArea3->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea3);
-			legend3->Name = L"Legend1";
-			this->chart1->Legends->Add(legend3);
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->chart1->Legends->Add(legend1);
 			this->chart1->Location = System::Drawing::Point(231, 12);
 			this->chart1->Name = L"chart1";
 			this->chart1->Palette = System::Windows::Forms::DataVisualization::Charting::ChartColorPalette::SeaGreen;
-			series6->ChartArea = L"ChartArea1";
-			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series6->Legend = L"Legend1";
-			series6->Name = L"Series1";
-			series7->ChartArea = L"ChartArea1";
-			series7->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series7->Legend = L"Legend1";
-			series7->Name = L"Series2";
-			series8->ChartArea = L"ChartArea1";
-			series8->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Area;
-			series8->Legend = L"Legend1";
-			series8->Name = L"Series3";
-			this->chart1->Series->Add(series6);
-			this->chart1->Series->Add(series7);
-			this->chart1->Series->Add(series8);
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Series1";
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series2->Legend = L"Legend1";
+			series2->Name = L"Series2";
+			series3->ChartArea = L"ChartArea1";
+			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Area;
+			series3->Legend = L"Legend1";
+			series3->Name = L"Series3";
+			this->chart1->Series->Add(series1);
+			this->chart1->Series->Add(series2);
+			this->chart1->Series->Add(series3);
 			this->chart1->Size = System::Drawing::Size(637, 364);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
@@ -225,22 +226,28 @@ namespace My4M_heat_rod {
 			// 
 			// chart2
 			// 
-			chartArea4->Name = L"ChartArea1";
-			this->chart2->ChartAreas->Add(chartArea4);
-			legend4->Name = L"Legend1";
-			this->chart2->Legends->Add(legend4);
+			chartArea2->Name = L"ChartArea1";
+			this->chart2->ChartAreas->Add(chartArea2);
+			legend2->Name = L"Legend1";
+			this->chart2->Legends->Add(legend2);
 			this->chart2->Location = System::Drawing::Point(231, 409);
 			this->chart2->Name = L"chart2";
-			series9->ChartArea = L"ChartArea1";
-			series9->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series9->Legend = L"Legend1";
-			series9->Name = L"Series1";
-			series10->ChartArea = L"ChartArea1";
-			series10->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series10->Legend = L"Legend1";
-			series10->Name = L"Series2";
-			this->chart2->Series->Add(series9);
-			this->chart2->Series->Add(series10);
+			series4->ChartArea = L"ChartArea1";
+			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series4->Legend = L"Legend1";
+			series4->Name = L"Series1";
+			series5->ChartArea = L"ChartArea1";
+			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series5->Legend = L"Legend1";
+			series5->Name = L"Series2";
+			series6->ChartArea = L"ChartArea1";
+			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Area;
+			series6->Legend = L"Legend1";
+			series6->Name = L"Series3";
+			series6->YValuesPerPoint = 2;
+			this->chart2->Series->Add(series4);
+			this->chart2->Series->Add(series5);
+			this->chart2->Series->Add(series6);
 			this->chart2->Size = System::Drawing::Size(637, 364);
 			this->chart2->TabIndex = 5;
 			this->chart2->Text = L"chart2";
@@ -462,13 +469,14 @@ namespace My4M_heat_rod {
 	}
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 }
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) 
+{
 	dim = Convert::ToInt64(textBox2->Text);
 	double eps = 0.0000005, eps_test = 0.;
 	double xeps1, ksi = 0.5, *d, *fi, *a, *v;
 		
-//	while (true) 
-//	{
+	while (true) 
+	{
 		eps_test = 0.;
 		d = new double[dim];
 		fi = new double[dim];
@@ -477,31 +485,35 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	
 		_calc_coef(dim, ksi, d, fi, a, _k1_t, _k2_t, _f1_t, _f2_t, _q1_t, _q2_t);
 		rush(dim, a, d, fi, v);
-		//for (int i = 0; i <= dim; ++i)
-		//	if (fabs(u((double)i / dim, ksi) - v[i]) > eps_test) {
-		//		eps_test = fabs(u((double)i / dim, ksi) - v[i]);
-		//		xeps1 = (double)i / dim;
-		//	}
-//		if (eps_test <= eps) break;
-//		dim *= 2;
-//	}
-//	}
-		for (int i = 0; i <= dim; ++i) {
+		for (int i = 0; i <= dim; ++i)
+			if (fabs(_true_sol((double)i / dim, ksi) - v[i]) > eps_test) 
+			{
+				eps_test = fabs(_true_sol((double)i / dim, ksi) - v[i]);
+				xeps1 = (double)i / dim;
+			}
+		if (eps_test <= eps) break;
+		dim *= 2;
+	
+	}
+		for (int i = 0; i <= dim; ++i) 
+		{
 			chart2->Series["Series1"]->Points->AddXY((double)i / dim, v[i]);
-			//chart2->Series["Series2"]->Points->AddXY((double)i / dim, u((double)i / dim)]);
-			//chart2->Series["Series3"]->Points->AddXY((double)i / dim, fabs(1000000.*u((double)i / dim) - v[i]));
+			chart2->Series["Series2"]->Points->AddXY((double)i / dim, _true_sol((double)i / dim, ksi));
+			chart2->Series["Series3"]->Points->AddXY((double)i / dim, fabs(1.22*_true_sol((double)i / dim, ksi) - v[i]));
 
 			dataGridView2->Rows->Add();
 			dataGridView2->Rows[i]->Cells[0]->Value = Convert::ToString(i);
 			dataGridView2->Rows[i]->Cells[1]->Value = Convert::ToString(i * _step);
-			//dataGridView2->Rows[i]->Cells[2]->Value = Convert::ToString(u);
+			dataGridView2->Rows[i]->Cells[2]->Value = Convert::ToString(_true_sol((double)i / dim, ksi));
 			dataGridView2->Rows[i]->Cells[3]->Value = Convert::ToString(v[i]);
-			//dataGridView2->Rows[i]->Cells[4]->Value = Convert::ToString(u - v);
+			dataGridView2->Rows[i]->Cells[4]->Value = Convert::ToString(_true_sol((double)i / dim, ksi) - v[i]);
 			//chart1->Series[*NSeries]->Points->AddXY((double)i / dim, v[i]);
 			//(*NSeries)++;
 			//chart1->Series[*NSeries]->Points->AddXY((double)i / dim, v2[2 * i]);
 			//(*NSeries)--;
 		}
+			
+
 		//		(*NSeries)++;
 		delete[] d;
 		delete[] fi;

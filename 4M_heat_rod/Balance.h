@@ -1,20 +1,20 @@
 //VARIANT_6
 #include <cmath>
 #define M_PI	3.14159265358979323846
-#define M_EXP	2.71828182845904523536 
+#define M_E		2.71828182845904523536 
 
 static double	ksi = 0.5;
-static int		dim = 10;
+static int		dim;
 static double	_step;
 
 typedef double(*func)(double);
 
-double _k1(double _x) { return (sqrt(M_EXP) / exp(_x)); }
+double _k1(double _x) { return (sqrt(M_E) / exp(_x)); }
 double _k2(double _x) { return 1.; }
 double _q1(double _x) { return 2.; }
 double _q2(double _x) { return sin(M_PI * _x); }
 double _f1(double _x) { return cos(M_PI * _x); }
-double _f2(double _x) { return (exp(_x) / sqrt(M_EXP)); }
+double _f2(double _x) { return (exp(_x) / sqrt(M_E)); }
 
 double _k1_t(double _x) { return 1.; }
 double _k2_t(double _x) { return 1.; }
@@ -23,7 +23,16 @@ double _q2_t(double _x) { return 1.; }
 double _f1_t(double _x) { return 0.; }
 double _f2_t(double _x) { return 1.; }
 
-
+double _true_sol(double _x, double _ksi) {
+	if (_x <= _ksi) {
+		return (0.2605215945035747*exp(sqrt(2)*_x) + 0.7394784054964253 * exp(-sqrt(2)*_x));
+		//return 0.5*(-0.438017)*exp(2 * x) + 1.21901 + 3.06162*pow(10, -17); 
+	}
+	else {
+		return (0.0377761446653678*exp(_x) + -0.2791300521337225*exp(-_x) + 1);
+		//return -0.115638*exp(x) + 0.314336 + x; 
+	}
+}
 
 double _calc_integral(func f, double a, double b)
 {
