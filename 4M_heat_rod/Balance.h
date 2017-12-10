@@ -1,20 +1,38 @@
+//VARIANT_6
 #include <cmath>
 #define M_PI	3.14159265358979323846
-#define M_EXP	2.71828182845904523536 
+#define M_E		2.71828182845904523536 
 
 static double	ksi = 0.5;
-static int		dim = 10;
-static double	_step;// = 1. / dim;
-
-
+static int		dim;
+static double	_step;
 
 typedef double(*func)(double);
-double _k1(double _x) { return (sqrt(M_EXP) / exp(_x)); }
+
+double _k1(double _x) { return (sqrt(M_E) / exp(_x)); }
 double _k2(double _x) { return 1.; }
 double _q1(double _x) { return 2.; }
 double _q2(double _x) { return sin(M_PI * _x); }
 double _f1(double _x) { return cos(M_PI * _x); }
-double _f2(double _x) { return (exp(_x) / sqrt(M_EXP)); }
+double _f2(double _x) { return (exp(_x) / sqrt(M_E)); }
+
+double _k1_t(double _x) { return 1.; }
+double _k2_t(double _x) { return 1.; }
+double _q1_t(double _x) { return 2.; }
+double _q2_t(double _x) { return 1.; }
+double _f1_t(double _x) { return 0.; }
+double _f2_t(double _x) { return 1.; }
+
+double _true_sol(double _x, double _ksi) {
+	if (_x <= _ksi) {
+		return (0.2605215945035747*exp(sqrt(2)*_x) + 0.7394784054964253 * exp(-sqrt(2)*_x));
+		//return 0.5*(-0.438017)*exp(2 * x) + 1.21901 + 3.06162*pow(10, -17); 
+	}
+	else {
+		return (0.0377761446653678*exp(_x) + -0.2791300521337225*exp(-_x) + 1);
+		//return -0.115638*exp(x) + 0.314336 + x; 
+	}
+}
 
 double _calc_integral(func f, double a, double b)
 {
@@ -22,9 +40,9 @@ double _calc_integral(func f, double a, double b)
 	_res = 0.0;
 	_step = (b - a) / 1000.;
 
-#pragma opm parallel for private(_res), reduction(+ : sum) 
+#pragma opm parallel for private(_res) reduction(+ : _res) 
 	for (int i(0); i < 1000; ++i) {
-		_res += f(a + _step * (i + 0.5));
+		_res = _res + f(a + _step * (i + 0.5));
 	}
 	_res *= _step;
 	return _res;
@@ -36,7 +54,7 @@ void _calc_coef
 	{
 	_step = 1. / n;
 	int i;
-	#pragma omp parallel for shared(d, phi, a) private(i)
+	#pragma omp parallel for private(i)
 	for (i = 1; i < n; ++i) {
 		if (_step*(i + 0.5) <= ksi) {
 			d[i] = _calc_integral(q1, _step*(i - 0.5), _step*(i + 0.5)) / _step;
@@ -53,7 +71,7 @@ void _calc_coef
 			}
 		}
 	}
-	#pragma omp parallel for shared(d, a) private(i)
+	#pragma omp parallel for private(i)
 	for (i = 1; i <= n; ++i) {
 		if (_step*i <= ksi) {
 			a[i] = 1 / (_calc_integral(k1, _step*(i - 1), _step*i) / _step);
