@@ -433,7 +433,7 @@ namespace My4M_heat_rod {
 				for (int i = 0; i <= dim; ++i) {
 					chart1->Series["Series1"]->Points->AddXY((double)i / dim, v[i]);
 					chart1->Series["Series2"]->Points->AddXY((double)i / dim, v2[2 * i]);
-					chart1->Series["Series3"]->Points->AddXY((double)i / dim, fabs(1000000.*(v[i] - v2[2 * i])));
+					chart1->Series["Series3"]->Points->AddXY((double)i / dim, 1000000*fabs((v[i] - v2[2 * i])));
 
 					dataGridView1->Rows->Add(); 
 					dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(i);
@@ -499,7 +499,7 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 		{
 			chart2->Series["Series1"]->Points->AddXY((double)i / dim, v[i]);
 			chart2->Series["Series2"]->Points->AddXY((double)i / dim, _true_sol((double)i / dim, ksi));
-			chart2->Series["Series3"]->Points->AddXY((double)i / dim, fabs(1.22*_true_sol((double)i / dim, ksi) - v[i]));
+			chart2->Series["Series3"]->Points->AddXY((double)i / dim, 1000000*fabs(_true_sol((double)i / dim, ksi) - v[i]));
 
 			dataGridView2->Rows->Add();
 			dataGridView2->Rows[i]->Cells[0]->Value = Convert::ToString(i);
